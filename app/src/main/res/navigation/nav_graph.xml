@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/pokemonsFragment">
+
+    <fragment
+        android:id="@+id/pokemonsFragment"
+        android:name="com.orpheu.pokeplexus.ui.pokemon.PokemonsFragment"
+        android:label="pokemonsFragment"
+        tools:layout="@layout/pokemons_fragment">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/pokemonDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pokemonDetailsFragment"
+        android:name="com.orpheu.pokeplexus.ui.pokemon_details.PokemonDetailsFragment"
+        android:label="pokemonDetailsFragment"
+        tools:layout="@layout/pokemons_details_fragment">
+
+        <argument
+            android:name="pokemon"
+            app:argType="com.orpheu.pokeplexus.domain.model.Pokemon" />
+
+    </fragment>
+</navigation>

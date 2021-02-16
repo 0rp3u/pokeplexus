@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">PokePlexus</string>
+    <string name="action_settings">Settings</string>
+    <string name="retry">Retry</string>
+
+    <string name="pokemon_number">#%03d</string>
+
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+
+    <string name="weight_number">%sKG</string>
+    <string name="height_number">%sM</string>
+
+    <string name="pokemon_type_water">water</string>
+    <string name="pokemon_type_steel">steel</string>
+    <string name="pokemon_type_rock">rock</string>
+    <string name="pokemon_type_psychic">psychic</string>
+    <string name="pokemon_type_poison">poison</string>
+    <string name="pokemon_type_normal">normal</string>
+    <string name="pokemon_type_ice">ice</string>
+    <string name="pokemon_type_ground">ground</string>
+    <string name="pokemon_type_grass">grass</string>
+    <string name="pokemon_type_ghost">ghost</string>
+    <string name="pokemon_type_flying">flying</string>
+    <string name="pokemon_type_fire">fire</string>
+    <string name="pokemon_type_fighting">fighting</string>
+    <string name="pokemon_type_fairy">fairy</string>
+    <string name="pokemon_type_electric">electric</string>
+    <string name="pokemon_type_dragon">dragon</string>
+    <string name="pokemon_type_dark">dark</string>
+    <string name="pokemon_type_bug">bug</string>
+
+    <string name="base_stats">Base stats</string>
+    <string name="hp">Hp</string>
+    <string name="attack">Attack</string>
+    <string name="special_attack">Special attack</string>
+    <string name="defense">Defense</string>
+    <string name="special_defense">Special defense</string>
+    <string name="speed">Speed</string>
+
+    <string name="stat_number">%d/300</string>
+
+
+</resources>
