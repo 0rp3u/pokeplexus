@@ -24,34 +24,6 @@ fun PokemonCollectionItem.mapTopDomain(): Pokemon {
     )
 }
 
-fun PokemonDetailsEntity.mapTopPokemon(): Pokemon {
-    return Pokemon(
-        id,
-        name,
-        "https://pokeres.bastionbot.org/images/pokemon/$id.png",
-        true
-    )
-}
-
-fun PokemonDetailsEntity.mapToPokemonDetails(): PokemonDetails {
-    return PokemonDetails(
-        id,
-        name,
-        "https://pokeres.bastionbot.org/images/pokemon/$id.png",
-        height,
-        weight,
-        types.map { it.mapToDomain() },
-        BaseStats(
-            hp,
-            attack,
-            defense,
-            speed,
-            specialAttack,
-            specialDefense
-        ),
-        true
-    )
-}
 
 fun Types.mapTopDomain() = when (type.name) {
     "water" -> Type.water
@@ -73,28 +45,6 @@ fun Types.mapTopDomain() = when (type.name) {
     "dark" -> Type.dark
     "bug" -> Type.bug
     else -> throw  Exception("cound not parse pokemon type ${type.name} ")
-}
-
-fun PokemonTypeInfo.mapToDomain() = when (this) {
-
-    PokemonTypeInfo.WATER -> Type.water
-    PokemonTypeInfo.STEEL -> Type.steel
-    PokemonTypeInfo.ROCK -> Type.rock
-    PokemonTypeInfo.PSYCHIC -> Type.psychic
-    PokemonTypeInfo.POISON -> Type.poison
-    PokemonTypeInfo.NORMAL -> Type.normal
-    PokemonTypeInfo.ICE -> Type.ice
-    PokemonTypeInfo.GROUND -> Type.ground
-    PokemonTypeInfo.GRASS -> Type.grass
-    PokemonTypeInfo.GHOST -> Type.ghost
-    PokemonTypeInfo.FLYING -> Type.flying
-    PokemonTypeInfo.FIRE -> Type.fire
-    PokemonTypeInfo.FIGHTING -> Type.fighting
-    PokemonTypeInfo.FAIRY -> Type.fairy
-    PokemonTypeInfo.ELECTRIC -> Type.electric
-    PokemonTypeInfo.DRAGON -> Type.dragon
-    PokemonTypeInfo.DARK -> Type.dark
-    PokemonTypeInfo.BUG -> Type.bug
 }
 
 fun PokemonDetailsResponse.mapTopDomain(): PokemonDetails {

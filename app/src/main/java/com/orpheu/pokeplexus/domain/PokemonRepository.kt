@@ -4,18 +4,21 @@ import android.net.Uri
 import androidx.paging.*
 import com.orpheu.pokeplexus.core.Resource
 import com.orpheu.pokeplexus.database.dao.FavoritePokemonDao
+import com.orpheu.pokeplexus.database.model.mappers.mapToPokemon
+import com.orpheu.pokeplexus.database.model.mappers.mapToPokemonDetails
 import com.orpheu.pokeplexus.domain.model.Pokemon
 import com.orpheu.pokeplexus.domain.model.PokemonDetails
 import com.orpheu.pokeplexus.network.PokeService
 import com.orpheu.pokeplexus.network.model.PokemonCollectionItem
-import com.orpheu.pokeplexus.network.model.mappers.mapToPokemonDetails
 import com.orpheu.pokeplexus.network.model.mappers.mapTopDomain
 import com.orpheu.pokeplexus.network.model.mappers.mapTopEntity
-import com.orpheu.pokeplexus.network.model.mappers.mapTopPokemon
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
-class PokemonRepository(val pokeService: PokeService, val favoritePokemonDao: FavoritePokemonDao) {
+class PokemonRepository(
+    private val pokeService: PokeService,
+    private val favoritePokemonDao: FavoritePokemonDao
+) {
 
     /*
         NOTE:
@@ -23,7 +26,7 @@ class PokemonRepository(val pokeService: PokeService, val favoritePokemonDao: Fa
         but since the api already gives us good pagination metadata I choose to go with that but
         extract the page number before the http request.
         could also work with the full URL using retrofit @Url annotation but would make it cumbersome
-        to fetch specific pages.
+        to fetch specific pages if needed.
      */
     class PokemonPagingSource(
         val pokeService: PokeService,
@@ -56,7 +59,7 @@ class PokemonRepository(val pokeService: PokeService, val favoritePokemonDao: Fa
             null
     }
 
-    fun getPokemonsPaged(): Flow<PagingData<Pokemon>> {
+    fun getPokemonPaged(): Flow<PagingData<Pokemon>> {
         return Pager(
             PagingConfig(
                 pageSize = 20,
@@ -68,16 +71,16 @@ class PokemonRepository(val pokeService: PokeService, val favoritePokemonDao: Fa
         }.flow.map { it.map { it.mapTopDomain() } }
     }
 
-    fun getPFavoritePokemons(): Flow<List<Pokemon>> =
+    fun getFavoritePokemon(): Flow<List<Pokemon>> =
         favoritePokemonDao.getFavoritedPokemon()
-            .map { it.map { dbPokemons -> dbPokemons.mapTopPokemon() } }
+            .map { it.map { dbPokemons -> dbPokemons.mapToPokemon() } }
 
 
     /*
     Since Pokemon data does not change that much we only fetch if we don't have local data.
     If the pokemon data was constantly changing and we wanted to always show fresh data, but still
-    be local first and reactive, as in local data event -> remote call and update local event with
-    new data -> local event. We would need to implement a NetworkBoundResource but using Flow
+    be local first and reactive, as in local data event -> remote call and update local storage with
+    new data -> local event. We would need to implement a NetworkBoundResource using Flow
      */
     fun getPokemonDetails(pokemonId: Int): Flow<Resource<PokemonDetails>> = flow {
         val local =

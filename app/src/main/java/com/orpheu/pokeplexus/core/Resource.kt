@@ -1,6 +1,5 @@
 package com.orpheu.pokeplexus.core
 
-import java.lang.Exception
 
 sealed class Resource<out DataType>(
     open val data: DataType?

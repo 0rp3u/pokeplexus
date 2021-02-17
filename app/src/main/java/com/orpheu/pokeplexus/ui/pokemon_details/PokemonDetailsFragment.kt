@@ -32,7 +32,6 @@ import com.orpheu.pokeplexus.ui.extension.getColorResource
 import com.orpheu.pokeplexus.ui.extension.getImageResource
 import com.orpheu.pokeplexus.ui.extension.getNameStringResource
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -130,7 +129,7 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
 
 
             }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.navigation
             .onEach {
@@ -138,7 +137,7 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
                     PokemonDetailsContract.ViewInstructions.NavigateBack -> navController.navigateUp()
                 }
             }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
 
         viewModel.isAddOrRemoveFavoriteLoading
@@ -146,7 +145,7 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
                 binding.ivLoadingFavorite.toVisibility = isLoading
                 binding.fabFavorite.toVisibility = !isLoading
             }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
         binding.ablToolbar.addOnOffsetChangedListener(
             OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -184,9 +183,9 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
 
         binding.fabFavorite.setImageResource(
             if (isFavorite)
-                R.drawable.ic_baseline_remove_circle_outline_24
+                R.drawable.ic_favorite_filled
             else
-                R.drawable.ic_baseline_add_circle_outline_24
+                R.drawable.ic_favorite
         )
 
 

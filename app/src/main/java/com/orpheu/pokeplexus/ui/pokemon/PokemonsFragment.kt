@@ -20,7 +20,6 @@ import com.orpheu.pokeplexus.domain.model.Pokemon
 import com.orpheu.pokeplexus.extension.launchWhenStartedIn
 import com.orpheu.pokeplexus.extension.toVisibility
 import com.orpheu.pokeplexus.ui.base.NavDestinationFragment
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -53,12 +52,48 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        TransitionManager.endTransitions(binding.root)
-        _binding = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
+        viewModel.error
+            .onEach { Snackbar.make(view, it.message, Snackbar.LENGTH_LONG).show() }
+            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.navigation
+            .onEach {
+                when (it) {
+                    is PokemonContract.ViewInstructions.NavigateToPokemonDetails -> navigateToPokemonDetails(
+                        it.pokemon
+                    )
+                }
+            }
+            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
+
+
+        setupToolBar()
+        setupPokemonList()
+
     }
 
+    private fun setupToolBar() {
+        viewModel.isFilteringFavorite
+            .onEach { isFilteringFavorite ->
+
+                binding.btnFilterFavorite.setImageResource(
+                    if (isFilteringFavorite)
+                        R.drawable.ic_favorite_filled
+                    else R.drawable.ic_favorite
+                )
+            }
+            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
+
+        binding.btnFilterFavorite.setOnClickListener {
+            viewModel.toggleFavoritePokemonFilter()
+        }
+    }
 
     private fun setupPokemonList() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
@@ -72,11 +107,9 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
                 if (position == pokemonsAdapter.itemCount) 2 else 1
         }
 
-
         viewModel.pokemons
-            .onEach { pokemonsAdapter.submitData(it) }
+            .onEach { pokemonsAdapter.submitData(viewLifecycleOwner.lifecycle, it) }
             .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
-
 
         viewModel.setPokemonListFlow(pokemonsAdapter.loadStateFlow)
 
@@ -95,38 +128,15 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
 
                 binding.ivLoading.toVisibility = state is PokemonContract.PokemonListState.Loading
             }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
         binding.btnRetry.setOnClickListener {
             pokemonsAdapter.refresh()
         }
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
-
-        setupPokemonList()
-
-        viewModel.error
-            .onEach { Snackbar.make(view, it.message, Snackbar.LENGTH_LONG).show() }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        viewModel.navigation
-            .onEach {
-                when (it) {
-                    is PokemonContract.ViewInstructions.NavigateToPokemonDetails -> navigateToPokemonDetails(
-                        it.pokemon
-                    )
-                }
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
 
 
     }
+
 
     private fun navigateToPokemonDetails(pokemon: Pokemon) {
         val extras = try {
@@ -139,7 +149,7 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
                 container to containerTransitionName,
             )
         } catch (e: Exception) {
-            Log.e("", "${e.message}")
+            Log.e("navigateToPokemonDetails", "${e.message}")
             FragmentNavigatorExtras()
         }
 
@@ -148,5 +158,12 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
             extras
         )
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        TransitionManager.endTransitions(binding.root)
+        _binding = null
+    }
+
 
 }

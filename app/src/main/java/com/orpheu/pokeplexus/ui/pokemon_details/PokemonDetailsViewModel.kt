@@ -33,8 +33,8 @@ class PokemonDetailsViewModel(
     }.shareIn(viewModelScope, SharingStarted.Lazily, 1)
 
 
-    override val pokemon: Flow<PokemonDetails> = pokemonResource.mapNotNull { it.data }
 
+    override val pokemon: Flow<PokemonDetails> = pokemonResource.mapNotNull { it.data }
 
     override val isPokemonDetailsLoading: Flow<Boolean> =
         pokemonResource.map { it.data == null && it is Resource.Loading }
@@ -89,6 +89,7 @@ class PokemonDetailsViewModel(
             _navigation.emit(PokemonDetailsContract.ViewInstructions.NavigateBack)
         }
     }
+
 
     override fun removeFavoritePokemonClicked() {
         viewModelScope.launch {

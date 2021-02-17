@@ -15,6 +15,8 @@ interface PokemonContract {
 
         val navigation: SharedFlow<ViewInstructions>
 
+        val isFilteringFavorite: Flow<Boolean>
+
         val pokemons: Flow<PagingData<Pokemon>>
 
         val pokemonListState: Flow<PokemonListState>
@@ -34,6 +36,7 @@ interface PokemonContract {
 
 
     interface ViewActions {
+        fun toggleFavoritePokemonFilter()
         fun pokemonClicked(pokemon: Pokemon)
     }
 

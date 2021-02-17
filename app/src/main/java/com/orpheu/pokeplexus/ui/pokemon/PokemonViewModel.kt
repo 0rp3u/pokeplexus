@@ -1,15 +1,11 @@
 package com.orpheu.pokeplexus.ui.pokemon
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.orpheu.pokeplexus.domain.PokemonRepository
 import com.orpheu.pokeplexus.domain.model.Pokemon
-import com.orpheu.pokeplexus.network.model.mappers.mapTopPokemon
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class PokemonViewModel(
@@ -25,22 +21,43 @@ class PokemonViewModel(
     private val _navigation = MutableSharedFlow<PokemonContract.ViewInstructions>()
     override val navigation: SharedFlow<PokemonContract.ViewInstructions> = _navigation
 
-    override val pokemons: Flow<PagingData<Pokemon>> = pokemonRepository.getPokemonsPaged()
-        .cachedIn(viewModelScope)
-        .combine(
-        pokemonRepository.getPFavoritePokemons()
-    ) { pokemonList, favoritePokemon ->
-        pokemonList.map { pokemonCollectionItem ->
-            favoritePokemon.firstOrNull { it.name == pokemonCollectionItem.name } ?: pokemonCollectionItem
-        }
-    }
+    private val _isFilteringFavorite = MutableStateFlow(false)
+    override val isFilteringFavorite: Flow<Boolean> = _isFilteringFavorite
 
-    override val pokemonListState: Flow<PokemonContract.PokemonListState> = PokemonListLoadStates.map {
-        when(val loadState = it.refresh) {
-            is LoadState.NotLoading -> PokemonContract.PokemonListState.Loaded
-            is LoadState.Loading -> PokemonContract.PokemonListState.Loading
-            //On a real application we would use content from string resources
-            is LoadState.Error -> PokemonContract.PokemonListState.LoadingError(loadState.error.localizedMessage ?: "something went wrong" )
+    private val favoritePokemon = pokemonRepository.getFavoritePokemon()
+        .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
+
+    private val pagedPokemon = pokemonRepository.getPokemonPaged()
+        .cachedIn(viewModelScope)
+        .combine(favoritePokemon) { pokemonList, favoritePokemon ->
+            pokemonList.map { pokemonCollectionItem ->
+                favoritePokemon.firstOrNull { it.name == pokemonCollectionItem.name }
+                    ?: pokemonCollectionItem
+            }
+        }
+
+    override val pokemons: Flow<PagingData<Pokemon>> =
+        _isFilteringFavorite.flatMapLatest { isFilteringFavorite ->
+            if (isFilteringFavorite){ favoritePokemon.map { PagingData.from(it) } }
+            else pagedPokemon
+        }
+
+
+    override val pokemonListState: Flow<PokemonContract.PokemonListState> =
+        PokemonListLoadStates.map {
+            when (val loadState = it.refresh) {
+                is LoadState.NotLoading -> PokemonContract.PokemonListState.Loaded
+                is LoadState.Loading -> PokemonContract.PokemonListState.Loading
+                //On a real application we would use content from string resources
+                is LoadState.Error -> PokemonContract.PokemonListState.LoadingError(
+                    loadState.error.localizedMessage ?: "something went wrong"
+                )
+            }
+        }
+
+    override fun toggleFavoritePokemonFilter() {
+        viewModelScope.launch {
+            _isFilteringFavorite.emit(!_isFilteringFavorite.value)
         }
     }
 
@@ -51,7 +68,7 @@ class PokemonViewModel(
         }
     }
 
-    fun setPokemonListFlow(loadStates: Flow<CombinedLoadStates>){
+    fun setPokemonListFlow(loadStates: Flow<CombinedLoadStates>) {
         viewModelScope.launch {
             PokemonListLoadStates.emitAll(loadStates)
         }
