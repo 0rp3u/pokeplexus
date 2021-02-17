@@ -69,8 +69,8 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         prepareTransition()
+
         bingPokemonBaseInfo(
             args.pokemon.name,
             args.pokemon.id,
