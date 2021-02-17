@@ -1,14 +1,37 @@
 # pokeplexus
 
-This application is was developed for a code challenge using some of me most recent android
+
+<p align="center">
+    <a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/preview-video.gif">
+        <img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/preview-video.gif" width="220" height="480"/>
+    </a>
+</p>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/home.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home.png" width="220" height="480">
+</a>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/home_filtered.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home_filtered.png" width="220" height="480">
+</a>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details.png"width="220" height="480">
+</a>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details_light.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details_light.png"width="220" height="480">
+</a>
+
+This application was developed for an interview code challenge using some of me most recent android
 libraries and recomendations, it allows you to:
 
 * Paginate from a list of pokemons;
 * Filter the pokemon list by favorited;
 * Visualize a pokemon details;
 * Favorite/UnFavorte a Pokemon;
-* Keeps your favorited pokemonb local si you can view then anytime;
-* String networking model that lets you keep using the application when you don't have connection;
+* Keeps your favorited pokemon local so you can view then anytime;
+* Strong networking model that lets you keep using the application when you don't have connection;
 
 ### Source of data
 The source of data is provided from the public API https://pokeapi.co.
