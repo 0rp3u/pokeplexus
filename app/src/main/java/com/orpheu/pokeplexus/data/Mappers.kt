@@ -1,4 +1,4 @@
-package com.orpheu.pokeplexus.data.mappers
+package com.orpheu.pokeplexus.data
 
 import android.net.Uri
 import com.orpheu.pokeplexus.data.model.BaseStats

@@ -3,7 +3,6 @@ package com.orpheu.pokeplexus.data
 import android.net.Uri
 import androidx.paging.*
 import com.orpheu.pokeplexus.core.Resource
-import com.orpheu.pokeplexus.data.mappers.*
 import com.orpheu.pokeplexus.database.dao.FavoritePokemonDao
 import com.orpheu.pokeplexus.data.model.Pokemon
 import com.orpheu.pokeplexus.data.model.PokemonDetails
