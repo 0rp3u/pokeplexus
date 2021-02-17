@@ -1,8 +1,6 @@
 package com.orpheu.pokeplexus.network.model
 
 
-import com.orpheu.pokeplexus.database.model.PokemonTypeInfo
-import com.orpheu.pokeplexus.database.model.RoomTypeConverters
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

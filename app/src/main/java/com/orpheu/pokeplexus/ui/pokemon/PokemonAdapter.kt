@@ -18,7 +18,7 @@ import com.orpheu.pokeplexus.databinding.PokemonItemBinding
 import com.orpheu.pokeplexus.domain.model.Pokemon
 
 
-class PokemonAdapter(val onPokemonClicked: (Pokemon) -> Unit) :
+class PokemonAdapter(private val onPokemonClicked: (Pokemon) -> Unit) :
     PagingDataAdapter<Pokemon, PokemonViewHolder>(
         PokemonDiffer
     ) {

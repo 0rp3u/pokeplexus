@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-public fun <T> Flow<T>.launchWhenStartedIn(scope: LifecycleCoroutineScope): Job = scope.launchWhenStarted {
+fun <T> Flow<T>.launchWhenStartedIn(scope: LifecycleCoroutineScope): Job = scope.launchWhenStarted {
     collect() // tail-call
 }

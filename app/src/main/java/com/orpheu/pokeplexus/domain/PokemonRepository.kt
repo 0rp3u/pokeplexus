@@ -29,7 +29,7 @@ class PokemonRepository(
         to fetch specific pages if needed.
      */
     class PokemonPagingSource(
-        val pokeService: PokeService,
+        private val pokeService: PokeService,
     ) : PagingSource<String, PokemonCollectionItem>() {
         override suspend fun load(
             params: LoadParams<String>
