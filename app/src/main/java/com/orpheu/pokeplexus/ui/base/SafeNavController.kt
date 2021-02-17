@@ -9,6 +9,9 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 
+
+//Needed because jetPack navigation does not handle repeated navigation requests,
+// as in a double click on a button that invokes navigation
 class SafeNavController(
     private val navController: NavController,
     @IdRes private val destinationId: Int

@@ -1,18 +1,14 @@
-package com.orpheu.pokeplexus.domain
+package com.orpheu.pokeplexus.data
 
 import android.net.Uri
 import androidx.paging.*
 import com.orpheu.pokeplexus.core.Resource
+import com.orpheu.pokeplexus.data.mappers.*
 import com.orpheu.pokeplexus.database.dao.FavoritePokemonDao
-import com.orpheu.pokeplexus.database.model.mappers.mapToPokemon
-import com.orpheu.pokeplexus.database.model.mappers.mapToPokemonDetails
-import com.orpheu.pokeplexus.domain.model.Pokemon
-import com.orpheu.pokeplexus.domain.model.PokemonDetails
+import com.orpheu.pokeplexus.data.model.Pokemon
+import com.orpheu.pokeplexus.data.model.PokemonDetails
 import com.orpheu.pokeplexus.network.PokeService
 import com.orpheu.pokeplexus.network.model.PokemonCollectionItem
-import com.orpheu.pokeplexus.network.model.mappers.mapToPokemonDetailsRequest
-import com.orpheu.pokeplexus.network.model.mappers.mapTopDomain
-import com.orpheu.pokeplexus.network.model.mappers.mapTopEntity
 import kotlinx.coroutines.flow.*
 
 class PokemonRepository(

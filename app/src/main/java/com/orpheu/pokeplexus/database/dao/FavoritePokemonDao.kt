@@ -1,5 +1,6 @@
 package com.orpheu.pokeplexus.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.orpheu.pokeplexus.database.model.PokemonDetailsEntity
 import com.orpheu.pokeplexus.database.model.RoomTypeConverters
@@ -21,6 +22,10 @@ abstract class FavoritePokemonDao {
 
     @Query("SELECT * FROM pokemondetailsentity WHERE pokemon_id = :pokemonId")
     abstract fun getFavoritePokemonById(pokemonId: Int): Flow<PokemonDetailsEntity?>
+
+    @Query("SELECT COUNT(*) FROM pokemondetailsentity WHERE pokemon_id = :pokemonId")
+    abstract fun isPokemonFavorited(pokemonId: Int): Flow<Boolean>
+
 
 
 }

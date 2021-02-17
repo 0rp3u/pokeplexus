@@ -1,7 +1,7 @@
 package com.orpheu.pokeplexus.ui.extension
 
 import com.orpheu.pokeplexus.R
-import com.orpheu.pokeplexus.domain.model.Type
+import com.orpheu.pokeplexus.data.model.Type
 
 fun Type.getImageResource() = when (this) {
     Type.water -> R.drawable.ic_water

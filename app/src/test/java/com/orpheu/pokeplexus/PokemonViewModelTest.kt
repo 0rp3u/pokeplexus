@@ -3,8 +3,8 @@ package com.orpheu.pokeplexus
 import MainCoroutineRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.orpheu.pokeplexus.database.dao.FavoritePokemonDao
-import com.orpheu.pokeplexus.domain.PokemonRepository
-import com.orpheu.pokeplexus.domain.model.Pokemon
+import com.orpheu.pokeplexus.data.PokemonRepository
+import com.orpheu.pokeplexus.data.model.Pokemon
 import com.orpheu.pokeplexus.network.PokeService
 import com.orpheu.pokeplexus.ui.pokemon.PokemonContract
 import com.orpheu.pokeplexus.ui.pokemon.PokemonViewModel

@@ -1,4 +1,4 @@
-package com.orpheu.pokeplexus.domain.model
+package com.orpheu.pokeplexus.data.model
 
 data class BaseStats(
     val hp: Int,

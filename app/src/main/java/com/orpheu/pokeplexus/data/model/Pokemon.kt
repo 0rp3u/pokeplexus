@@ -1,4 +1,4 @@
-package com.orpheu.pokeplexus.domain.model
+package com.orpheu.pokeplexus.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

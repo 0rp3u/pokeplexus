@@ -1,11 +1,10 @@
 package com.orpheu.pokeplexus.ui.pokemon_details
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.orpheu.pokeplexus.core.Resource
-import com.orpheu.pokeplexus.domain.PokemonRepository
-import com.orpheu.pokeplexus.domain.model.PokemonDetails
+import com.orpheu.pokeplexus.data.PokemonRepository
+import com.orpheu.pokeplexus.data.model.PokemonDetails
 import com.orpheu.pokeplexus.extension.filterResultFailure
 import com.orpheu.pokeplexus.extension.toResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi

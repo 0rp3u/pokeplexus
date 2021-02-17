@@ -1,8 +1,6 @@
 package com.orpheu.pokeplexus.ui.pokemon_details
 
-import com.orpheu.pokeplexus.domain.model.Pokemon
-import com.orpheu.pokeplexus.domain.model.PokemonDetails
-import com.orpheu.pokeplexus.ui.pokemon.PokemonContract
+import com.orpheu.pokeplexus.data.model.PokemonDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 

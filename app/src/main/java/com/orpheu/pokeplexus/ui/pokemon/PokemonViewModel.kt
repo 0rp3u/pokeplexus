@@ -3,8 +3,8 @@ package com.orpheu.pokeplexus.ui.pokemon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.orpheu.pokeplexus.domain.PokemonRepository
-import com.orpheu.pokeplexus.domain.model.Pokemon
+import com.orpheu.pokeplexus.data.PokemonRepository
+import com.orpheu.pokeplexus.data.model.Pokemon
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -27,6 +27,8 @@ class PokemonViewModel(
     private val favoritePokemon = pokemonRepository.getFavoritePokemon()
         .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
+
+    //combined with the favorite information
     private val pagedPokemon = pokemonRepository.getPokemonPaged()
         .cachedIn(viewModelScope)
         .combine(favoritePokemon) { pokemonList, favoritePokemon ->
@@ -56,9 +58,8 @@ class PokemonViewModel(
         }
 
     override fun toggleFavoritePokemonFilter() {
-        viewModelScope.launch {
-            _isFilteringFavorite.emit(!_isFilteringFavorite.value)
-        }
+            _isFilteringFavorite.value = !_isFilteringFavorite.value
+
     }
 
 
