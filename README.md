@@ -10,19 +10,16 @@
 
 <p align="center">
         <a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/home.png">
-        <img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home.png" width="220" height="480">
+        <img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home.png" width="200" height="470">
           </a>
 <a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/home_filtered.png">
-<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home_filtered.png" width="220" height="480"/>
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home_filtered.png" width="200" height="470"/>
 </a>
-</p>
-
-<p align="center">
 <a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details.png">
-<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details.png"width="220" height="480">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details.png"width="200" height="470">
 </a>
 <a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details_light.png">
-<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details_light.png"width="220" height="480"/>
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details_light.png"width="200" height="470"/>
 </a>
     </p>
 
