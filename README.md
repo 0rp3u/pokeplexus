@@ -1,5 +1,28 @@
 # pokeplexus
 
+
+<p align="center">
+    <a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/preview-video.gif">
+        <img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/preview-video.gif" width="220" height="480"/>
+    </a>
+</p>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/home.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home.png" width="220" height="480">
+</a>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/home_filtered.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/home_filtered.png" width="220" height="480">
+</a>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details.png"width="220" height="480">
+</a>
+
+<a href="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details_light.png">
+<img src="https://github.com/0rp3u/pokeplexus/raw/master/preview/pokemon_details_light.png"width="220" height="480">
+</a>
+
 This application is was developed for a code challenge using some of me most recent android
 libraries and recomendations, it allows you to:
 
