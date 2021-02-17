@@ -2,13 +2,13 @@ package com.orpheu.pokeplexus.network.model.mappers
 
 import android.net.Uri
 import com.orpheu.pokeplexus.database.model.PokemonDetailsEntity
-import com.orpheu.pokeplexus.database.model.PokemonTypeInfo
 import com.orpheu.pokeplexus.database.model.RoomTypeConverters
 import com.orpheu.pokeplexus.domain.model.BaseStats
 import com.orpheu.pokeplexus.domain.model.Pokemon
 import com.orpheu.pokeplexus.domain.model.PokemonDetails
 import com.orpheu.pokeplexus.domain.model.Type
 import com.orpheu.pokeplexus.network.model.PokemonCollectionItem
+import com.orpheu.pokeplexus.network.model.PokemonDetailsRequest
 import com.orpheu.pokeplexus.network.model.PokemonDetailsResponse
 import com.orpheu.pokeplexus.network.model.Types
 
@@ -81,6 +81,23 @@ fun PokemonDetailsResponse.mapTopEntity(): PokemonDetailsEntity {
         stats.find { it.stat.name == "speed" }?.base_stat ?: 0,
         stats.find { it.stat.name == "special-attack" }?.base_stat ?: 0,
         stats.find { it.stat.name == "special-defense" }?.base_stat ?: 0,
+    )
+}
+
+fun PokemonDetailsEntity.mapToPokemonDetailsRequest(): PokemonDetailsRequest {
+    return PokemonDetailsRequest(
+        id,
+        name,
+        imageUrl,
+        height,
+        weight,
+        types.map { it.tag },
+        hp,
+        attack,
+        defense,
+        speed,
+        specialAttack,
+        specialDefense
     )
 }
 

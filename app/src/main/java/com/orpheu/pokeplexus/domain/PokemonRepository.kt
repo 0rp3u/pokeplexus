@@ -10,9 +10,9 @@ import com.orpheu.pokeplexus.domain.model.Pokemon
 import com.orpheu.pokeplexus.domain.model.PokemonDetails
 import com.orpheu.pokeplexus.network.PokeService
 import com.orpheu.pokeplexus.network.model.PokemonCollectionItem
+import com.orpheu.pokeplexus.network.model.mappers.mapToPokemonDetailsRequest
 import com.orpheu.pokeplexus.network.model.mappers.mapTopDomain
 import com.orpheu.pokeplexus.network.model.mappers.mapTopEntity
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 class PokemonRepository(
@@ -102,9 +102,9 @@ class PokemonRepository(
 
     suspend fun addToFavorites(pokemonId: Int): Result<Unit> {
         return try {
-            val pokemonDetails = pokeService.getPokemonDetails(pokemonId).mapTopEntity()
-            delay(5000)
-            favoritePokemonDao.insertOrIgnore(pokemonDetails)
+            val pokemonDetailsEntity = pokeService.getPokemonDetails(pokemonId).mapTopEntity()
+            pokeService.favoritePokemonDetails(pokemonDetailsEntity.mapToPokemonDetailsRequest())
+            favoritePokemonDao.insertOrIgnore(pokemonDetailsEntity)
             Result.success(Unit)
 
         } catch (e: Exception) {
@@ -114,7 +114,10 @@ class PokemonRepository(
 
     suspend fun removeFromFavorites(pokemonId: Int): Result<Unit> {
         return try {
-            delay(5000)
+            val pokemonDetailsEntity = favoritePokemonDao.getFavoritePokemonById(pokemonId).first()
+                ?: throw Exception("cannot remove an unfavorited pokemon from favorites")
+
+            pokeService.unFavoritePokemonDetails(pokemonDetailsEntity.mapToPokemonDetailsRequest())
             favoritePokemonDao.deleteById(pokemonId)
             Result.success(Unit)
 

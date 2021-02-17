@@ -1,11 +1,11 @@
 package com.orpheu.pokeplexus.network
 
+import com.orpheu.pokeplexus.domain.model.PokemonDetails
 import com.orpheu.pokeplexus.network.model.PaginatedResponse
 import com.orpheu.pokeplexus.network.model.PokemonCollectionItem
+import com.orpheu.pokeplexus.network.model.PokemonDetailsRequest
 import com.orpheu.pokeplexus.network.model.PokemonDetailsResponse
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface PokeService {
 
@@ -19,5 +19,22 @@ interface PokeService {
     suspend fun getPokemonDetails(
         @Path("id") id: Int
     ): PokemonDetailsResponse
+
+
+
+    /*Since this is a endpoint in a real cenario we would have a new okHTTPClient Instance
+     and a new retrofit Service for it */
+    @POST("https://webhook.site/c09b20f2-4007-4b6d-89db-220c46fee90f/favofite")
+    suspend fun favoritePokemonDetails(
+        @Body pokemon: PokemonDetailsRequest
+    ): Unit
+
+
+    @POST("https://webhook.site/c09b20f2-4007-4b6d-89db-220c46fee90f/unFavofite")
+    suspend fun unFavoritePokemonDetails(
+        @Body pokemon: PokemonDetailsRequest
+    ) : Unit
+
+
 
 }
