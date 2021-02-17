@@ -3,8 +3,8 @@ package com.orpheu.pokeplexus.ui.pokemon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.orpheu.pokeplexus.domain.PokemonRepository
-import com.orpheu.pokeplexus.domain.model.Pokemon
+import com.orpheu.pokeplexus.data.PokemonRepository
+import com.orpheu.pokeplexus.data.model.Pokemon
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -13,7 +13,7 @@ class PokemonViewModel(
 ) : ViewModel(), PokemonContract.ViewModel {
 
 
-    private val PokemonListLoadStates = MutableSharedFlow<CombinedLoadStates>()
+    private val pokemonListLoadStates = MutableSharedFlow<CombinedLoadStates>()
 
     private val _error = MutableSharedFlow<PokemonContract.ViewState.Error>()
     override val error: SharedFlow<PokemonContract.ViewState.Error> = _error
@@ -27,6 +27,8 @@ class PokemonViewModel(
     private val favoritePokemon = pokemonRepository.getFavoritePokemon()
         .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
+
+    //combined with the favorite information
     private val pagedPokemon = pokemonRepository.getPokemonPaged()
         .cachedIn(viewModelScope)
         .combine(favoritePokemon) { pokemonList, favoritePokemon ->
@@ -44,7 +46,7 @@ class PokemonViewModel(
 
 
     override val pokemonListState: Flow<PokemonContract.PokemonListState> =
-        PokemonListLoadStates.map {
+        pokemonListLoadStates.map {
             when (val loadState = it.refresh) {
                 is LoadState.NotLoading -> PokemonContract.PokemonListState.Loaded
                 is LoadState.Loading -> PokemonContract.PokemonListState.Loading
@@ -56,9 +58,8 @@ class PokemonViewModel(
         }
 
     override fun toggleFavoritePokemonFilter() {
-        viewModelScope.launch {
-            _isFilteringFavorite.emit(!_isFilteringFavorite.value)
-        }
+            _isFilteringFavorite.value = !_isFilteringFavorite.value
+
     }
 
 
@@ -70,7 +71,7 @@ class PokemonViewModel(
 
     fun setPokemonListFlow(loadStates: Flow<CombinedLoadStates>) {
         viewModelScope.launch {
-            PokemonListLoadStates.emitAll(loadStates)
+            pokemonListLoadStates.emitAll(loadStates)
         }
     }
 }

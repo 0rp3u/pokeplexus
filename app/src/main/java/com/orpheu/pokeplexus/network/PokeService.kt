@@ -1,6 +1,5 @@
 package com.orpheu.pokeplexus.network
 
-import com.orpheu.pokeplexus.domain.model.PokemonDetails
 import com.orpheu.pokeplexus.network.model.PaginatedResponse
 import com.orpheu.pokeplexus.network.model.PokemonCollectionItem
 import com.orpheu.pokeplexus.network.model.PokemonDetailsRequest
@@ -22,8 +21,8 @@ interface PokeService {
 
 
 
-    /*Since this is a endpoint in a real cenario we would have a new okHTTPClient Instance
-     and a new retrofit Service for it */
+    /*Since this is a different endpoint in a real scenario we would have a new okHTTPClient Instance
+     and a new retrofit Service using it */
     @POST("https://webhook.site/c09b20f2-4007-4b6d-89db-220c46fee90f/favofite")
     suspend fun favoritePokemonDetails(
         @Body pokemon: PokemonDetailsRequest

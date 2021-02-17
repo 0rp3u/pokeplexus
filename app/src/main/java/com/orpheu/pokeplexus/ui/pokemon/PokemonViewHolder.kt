@@ -13,7 +13,7 @@ import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import com.orpheu.pokeplexus.R
 import com.orpheu.pokeplexus.databinding.PokemonItemBinding
-import com.orpheu.pokeplexus.domain.model.Pokemon
+import com.orpheu.pokeplexus.data.model.Pokemon
 
 class PokemonViewHolder(val binding: PokemonItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -1,7 +1,7 @@
 package com.orpheu.pokeplexus.ui.pokemon
 
 import androidx.paging.PagingData
-import com.orpheu.pokeplexus.domain.model.Pokemon
+import com.orpheu.pokeplexus.data.model.Pokemon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 

@@ -16,7 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialElevationScale
 import com.orpheu.pokeplexus.R
 import com.orpheu.pokeplexus.databinding.PokemonsFragmentBinding
-import com.orpheu.pokeplexus.domain.model.Pokemon
+import com.orpheu.pokeplexus.data.model.Pokemon
 import com.orpheu.pokeplexus.extension.launchWhenStartedIn
 import com.orpheu.pokeplexus.extension.toVisibility
 import com.orpheu.pokeplexus.ui.base.NavDestinationFragment

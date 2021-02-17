@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import com.orpheu.pokeplexus.BuildConfig
 import com.orpheu.pokeplexus.database.AppDatabase
-import com.orpheu.pokeplexus.domain.PokemonRepository
+import com.orpheu.pokeplexus.data.PokemonRepository
 import com.orpheu.pokeplexus.network.PokeService
 import com.orpheu.pokeplexus.network.interceptor.CacheInterceptor
 import com.orpheu.pokeplexus.network.interceptor.OfflineCacheInterceptor

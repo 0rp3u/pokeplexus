@@ -22,8 +22,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialContainerTransform
 import com.orpheu.pokeplexus.R
 import com.orpheu.pokeplexus.databinding.PokemonsDetailsFragmentBinding
-import com.orpheu.pokeplexus.domain.model.BaseStats
-import com.orpheu.pokeplexus.domain.model.Type
+import com.orpheu.pokeplexus.data.model.BaseStats
+import com.orpheu.pokeplexus.data.model.Type
 import com.orpheu.pokeplexus.extension.changeStatusBarColor
 import com.orpheu.pokeplexus.extension.launchWhenStartedIn
 import com.orpheu.pokeplexus.extension.toVisibility
@@ -69,9 +69,9 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         prepareTransition()
-        bingPokemonBaseInfo(
+
+        bindPokemonBaseInfo(
             args.pokemon.name,
             args.pokemon.id,
             args.pokemon.imageUrl,
@@ -86,7 +86,7 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
                 firstEvent = false
                 TransitionManager.beginDelayedTransition(binding.root)
 
-                bingPokemonBaseInfo(pokemon.name, pokemon.id, pokemon.imageUrl, pokemon.favorite)
+                bindPokemonBaseInfo(pokemon.name, pokemon.id, pokemon.imageUrl, pokemon.favorite)
 
 
 
@@ -171,7 +171,7 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
         }
     }
 
-    private fun bingPokemonBaseInfo(
+    private fun bindPokemonBaseInfo(
         name: String,
         number: Int,
         imageUrl: String,

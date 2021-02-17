@@ -1,24 +1,12 @@
 package com.orpheu.pokeplexus.ui.pokemon
 
-import android.graphics.drawable.Animatable
-import android.graphics.drawable.GradientDrawable
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.paging.PagingDataAdapter
-import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.github.florent37.glidepalette.BitmapPalette
-import com.github.florent37.glidepalette.GlidePalette
-import com.orpheu.pokeplexus.R
-import com.orpheu.pokeplexus.databinding.PokemonItemBinding
-import com.orpheu.pokeplexus.domain.model.Pokemon
+import com.orpheu.pokeplexus.data.model.Pokemon
 
 
-class PokemonAdapter(val onPokemonClicked: (Pokemon) -> Unit) :
+class PokemonAdapter(private val onPokemonClicked: (Pokemon) -> Unit) :
     PagingDataAdapter<Pokemon, PokemonViewHolder>(
         PokemonDiffer
     ) {
