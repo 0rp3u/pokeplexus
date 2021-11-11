@@ -13,6 +13,10 @@ import com.orpheu.pokeplexus.network.model.PokemonDetailsRequest
 import com.orpheu.pokeplexus.network.model.PokemonDetailsResponse
 import com.orpheu.pokeplexus.network.model.Types
 
+
+private fun buildPokemonImageURI(id: Int) =
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
+
 fun PokemonCollectionItem.mapTopDomain(): Pokemon {
     val id = Uri.parse(url).lastPathSegment?.toInt()
         ?: throw Exception("Could not parse id from Pokemon url")
@@ -20,7 +24,7 @@ fun PokemonCollectionItem.mapTopDomain(): Pokemon {
     return Pokemon(
         id,
         name,
-        "https://pokeres.bastionbot.org/images/pokemon/$id.png",
+        buildPokemonImageURI(id),
         false
     )
 }
@@ -52,7 +56,7 @@ fun PokemonDetailsResponse.mapTopDomain(): PokemonDetails {
     return PokemonDetails(
         id,
         name,
-        "https://pokeres.bastionbot.org/images/pokemon/$id.png",
+        buildPokemonImageURI(id),
         height,
         weight,
         this.types.map { it.mapTopDomain() },
@@ -72,7 +76,7 @@ fun PokemonDetailsResponse.mapTopEntity(): PokemonDetailsEntity {
     return PokemonDetailsEntity(
         id,
         name,
-        "https://pokeres.bastionbot.org/images/pokemon/$id.png",
+        buildPokemonImageURI(id),
         height,
         weight,
         types.map { RoomTypeConverters.fromTagPokemonTypeInfo(it.type.name) },
@@ -107,7 +111,7 @@ fun PokemonDetailsEntity.mapToPokemon(): Pokemon {
     return Pokemon(
         id,
         name,
-        "https://pokeres.bastionbot.org/images/pokemon/$id.png",
+        buildPokemonImageURI(id),
         true
     )
 }
@@ -116,7 +120,7 @@ fun PokemonDetailsEntity.mapToPokemonDetails(): PokemonDetails {
     return PokemonDetails(
         id,
         name,
-        "https://pokeres.bastionbot.org/images/pokemon/$id.png",
+        buildPokemonImageURI(id),
         height,
         weight,
         types.map { it.mapToDomain() },

@@ -41,6 +41,8 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
 
     private val args: PokemonDetailsFragmentArgs by navArgs()
 
+    //needs a backing field to allow to null the viewBinding instance when the fragment view is destroyed,
+    // thus preventing memory leak with the view Instance
     private var _binding: PokemonsDetailsFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -80,15 +82,13 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
 
 
         var firstEvent = true
-        viewModel.pokemon
-            .debounce { if (firstEvent) 500 else 0 } //so it does nto interfere with shared transition
-            .onEach { pokemon ->
+        viewModel.viewState
+            .debounce { if (firstEvent) 500 else 0 } //so it does not interfere with shared transition
+            .onEach { (pokemon, isPokemonDetailsLoading, isAddOrRemoveFavoriteLoading) ->
                 firstEvent = false
                 TransitionManager.beginDelayedTransition(binding.root)
 
                 bindPokemonBaseInfo(pokemon.name, pokemon.id, pokemon.imageUrl, pokemon.favorite)
-
-
 
                 binding.fabFavorite.setOnClickListener {
                     if (pokemon.favorite)
@@ -106,14 +106,15 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
 
                 bindBaseStats(pokemon.baseStats)
 
-            }.launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
+                if (isPokemonDetailsLoading)
+                    binding.clErrorState.visibility = View.GONE
 
-        viewModel.isPokemonDetailsLoading
-            .onEach { isLoading ->
-                if (isLoading) binding.clErrorState.visibility = View.GONE
-                binding.ivLoadingPokemon.toVisibility = isLoading
-            }
-            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
+                binding.ivLoadingPokemon.toVisibility = isPokemonDetailsLoading
+
+                binding.ivLoadingFavorite.toVisibility = isAddOrRemoveFavoriteLoading
+                binding.fabFavorite.toVisibility = !isAddOrRemoveFavoriteLoading
+
+            }.launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
 
         viewModel.error
@@ -139,13 +140,6 @@ class PokemonDetailsFragment : NavDestinationFragment(R.id.pokemonDetailsFragmen
             }
             .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
-
-        viewModel.isAddOrRemoveFavoriteLoading
-            .onEach { isLoading ->
-                binding.ivLoadingFavorite.toVisibility = isLoading
-                binding.fabFavorite.toVisibility = !isLoading
-            }
-            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
         binding.ablToolbar.addOnOffsetChangedListener(
             OnOffsetChangedListener { appBarLayout, verticalOffset ->

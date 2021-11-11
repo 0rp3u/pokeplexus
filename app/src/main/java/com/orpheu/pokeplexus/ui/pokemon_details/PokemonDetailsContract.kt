@@ -1,6 +1,9 @@
 package com.orpheu.pokeplexus.ui.pokemon_details
 
+import androidx.paging.PagingData
+import com.orpheu.pokeplexus.data.model.Pokemon
 import com.orpheu.pokeplexus.data.model.PokemonDetails
+import com.orpheu.pokeplexus.ui.pokemon.PokemonsContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -13,11 +16,13 @@ interface PokemonDetailsContract {
 
         val navigation: SharedFlow<ViewInstructions>
 
-        val pokemon: Flow<PokemonDetails>
+        val viewState: SharedFlow<PokemonDetailsViewState>
 
-        val isPokemonDetailsLoading: Flow<Boolean>
-
-        val isAddOrRemoveFavoriteLoading: Flow<Boolean>
+        data class PokemonDetailsViewState(
+            val pokemon: PokemonDetails,
+            val isPokemonDetailsLoading: Boolean,
+            val isAddOrRemoveFavoriteLoading: Boolean,
+        )
 
 
 

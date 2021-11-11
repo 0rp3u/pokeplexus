@@ -20,6 +20,7 @@ import com.orpheu.pokeplexus.data.model.Pokemon
 import com.orpheu.pokeplexus.extension.launchWhenStartedIn
 import com.orpheu.pokeplexus.extension.toVisibility
 import com.orpheu.pokeplexus.ui.base.NavDestinationFragment
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,16 +31,20 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
 
     private val viewModel: PokemonViewModel by viewModel()
 
+    //needs a backing field to allow to null the viewBinding instance when the fragment view is destroyed,
+    // thus preventing memory leak with the view Instance
     private var _binding: PokemonsFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val animDuration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
         exitTransition = MaterialElevationScale(false).apply {
-            duration = 200
+            duration = animDuration
         }
         reenterTransition = MaterialElevationScale(true).apply {
-            duration = 200
+            duration = animDuration
         }
     }
 
@@ -58,6 +63,10 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
 
+        setupToolBar()
+        setupPokemonList()
+
+
         viewModel.error
             .onEach { Snackbar.make(view, it.message, Snackbar.LENGTH_LONG).show() }
             .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
@@ -65,7 +74,7 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
         viewModel.navigation
             .onEach {
                 when (it) {
-                    is PokemonContract.ViewInstructions.NavigateToPokemonDetails -> navigateToPokemonDetails(
+                    is PokemonsContract.ViewInstructions.NavigateToPokemonDetails -> navigateToPokemonDetails(
                         it.pokemon
                     )
                 }
@@ -73,23 +82,33 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
             .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
 
-        setupToolBar()
-        setupPokemonList()
 
+        viewModel.viewState.onEach { (isFilteringFavorite, pokemons, pokemonListState) ->
+            binding.btnFilterFavorite.setImageResource(
+                if (isFilteringFavorite)
+                    R.drawable.ic_favorite_filled
+                else R.drawable.ic_favorite
+            )
+
+            pokemonsAdapter.submitData(viewLifecycleOwner.lifecycle, pokemons)
+
+            TransitionManager.beginDelayedTransition(
+                binding.root,
+                AutoTransition().excludeTarget(binding.rvPokemons, true)
+            )
+
+            binding.clErrorState.toVisibility =
+                pokemonListState is PokemonsContract.PokemonListState.LoadingError
+            binding.tvErrorMessage.text =
+                (pokemonListState as? PokemonsContract.PokemonListState.LoadingError)?.message
+
+            binding.ivLoading.toVisibility =
+                pokemonListState is PokemonsContract.PokemonListState.Loading
+
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun setupToolBar() {
-        viewModel.isFilteringFavorite
-            .onEach { isFilteringFavorite ->
-
-                binding.btnFilterFavorite.setImageResource(
-                    if (isFilteringFavorite)
-                        R.drawable.ic_favorite_filled
-                    else R.drawable.ic_favorite
-                )
-            }
-            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
-
         binding.btnFilterFavorite.setOnClickListener {
             viewModel.toggleFavoritePokemonFilter()
         }
@@ -101,40 +120,16 @@ class PokemonsFragment : NavDestinationFragment(R.id.pokemonsFragment) {
         binding.rvPokemons.adapter = pokemonsAdapter
             .withLoadStateFooter(LoaderStateAdapter(pokemonsAdapter::retry))
 
-
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int) =
                 if (position == pokemonsAdapter.itemCount) 2 else 1
         }
 
-        viewModel.pokemons
-            .onEach { pokemonsAdapter.submitData(viewLifecycleOwner.lifecycle, it) }
-            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
-
         viewModel.setPokemonListFlow(pokemonsAdapter.loadStateFlow)
-
-
-        viewModel.pokemonListState
-            .onEach { state ->
-                TransitionManager.beginDelayedTransition(
-                    binding.root,
-                    AutoTransition().excludeTarget(binding.rvPokemons, true)
-                )
-
-                binding.clErrorState.toVisibility =
-                    state is PokemonContract.PokemonListState.LoadingError
-                binding.tvErrorMessage.text =
-                    (state as? PokemonContract.PokemonListState.LoadingError)?.message
-
-                binding.ivLoading.toVisibility = state is PokemonContract.PokemonListState.Loading
-            }
-            .launchWhenStartedIn(viewLifecycleOwner.lifecycleScope)
 
         binding.btnRetry.setOnClickListener {
             pokemonsAdapter.refresh()
         }
-
-
     }
 
 

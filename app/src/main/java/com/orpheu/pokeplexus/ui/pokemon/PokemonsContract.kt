@@ -5,7 +5,7 @@ import com.orpheu.pokeplexus.data.model.Pokemon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
-interface PokemonContract {
+interface PokemonsContract {
 
     interface ViewModel : ViewState, ViewActions
 
@@ -15,14 +15,18 @@ interface PokemonContract {
 
         val navigation: SharedFlow<ViewInstructions>
 
-        val isFilteringFavorite: Flow<Boolean>
+        val viewState: Flow<PokemonsViewState>
 
-        val pokemons: Flow<PagingData<Pokemon>>
+        data class PokemonsViewState(
+            val isFilteringFavorite:Boolean,
+            val pokemons:PagingData<Pokemon>,
+            val pokemonListState:PokemonListState
+        )
 
-        val pokemonListState: Flow<PokemonListState>
+
 
         //when having multiple errors with different view behaviours we should migrate to a sealed class
-        // with the different errors
+        // with the different errors typed
         data class Error(val message: String)
 
     }

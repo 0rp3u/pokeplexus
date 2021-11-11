@@ -6,7 +6,7 @@ import com.orpheu.pokeplexus.database.dao.FavoritePokemonDao
 import com.orpheu.pokeplexus.data.PokemonRepository
 import com.orpheu.pokeplexus.data.model.Pokemon
 import com.orpheu.pokeplexus.network.PokeService
-import com.orpheu.pokeplexus.ui.pokemon.PokemonContract
+import com.orpheu.pokeplexus.ui.pokemon.PokemonsContract
 import com.orpheu.pokeplexus.ui.pokemon.PokemonViewModel
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,8 +48,8 @@ class PokemonViewModelTest {
         pokemonViewModel.pokemonClicked(testPokemon)
 
         with(testnavigationFlow.replayCache.first()) {
-            assertTrue(this is PokemonContract.ViewInstructions.NavigateToPokemonDetails)
-            assertTrue((this as PokemonContract.ViewInstructions.NavigateToPokemonDetails).pokemon == testPokemon)
+            assertTrue(this is PokemonsContract.ViewInstructions.NavigateToPokemonDetails)
+            assertTrue((this as PokemonsContract.ViewInstructions.NavigateToPokemonDetails).pokemon == testPokemon)
         }
 
     }

@@ -20,20 +20,20 @@ interface PokeService {
     ): PokemonDetailsResponse
 
 
-
-    /*Since this is a different endpoint in a real scenario we would have a new okHTTPClient Instance
-     and a new retrofit Service using it */
-    @POST("https://webhook.site/c09b20f2-4007-4b6d-89db-220c46fee90f/favofite")
+    /*
+    Since this is a different endpoint in a real scenario we would have a new okHTTPClient Instance
+    and a new retrofit Service for it, but for the sake of simplicity we force the full URL on this service
+      */
+    @POST("https://webhook.site/bcc14f53-54ca-49e6-914c-3ffcd10b12df/favofite")
     suspend fun favoritePokemonDetails(
         @Body pokemon: PokemonDetailsRequest
     ): Unit
 
 
-    @POST("https://webhook.site/c09b20f2-4007-4b6d-89db-220c46fee90f/unFavofite")
+    @POST("https://webhook.site/bcc14f53-54ca-49e6-914c-3ffcd10b12df/unFavofite")
     suspend fun unFavoritePokemonDetails(
         @Body pokemon: PokemonDetailsRequest
-    ) : Unit
-
+    ): Unit
 
 
 }

@@ -32,10 +32,9 @@ class PokemonDetailsViewModel(
     }.shareIn(viewModelScope, SharingStarted.Lazily, 1)
 
 
+    private val pokemon: Flow<PokemonDetails> = pokemonResource.mapNotNull { it.data }
 
-    override val pokemon: Flow<PokemonDetails> = pokemonResource.mapNotNull { it.data }
-
-    override val isPokemonDetailsLoading: Flow<Boolean> =
+    private val isPokemonDetailsLoading: Flow<Boolean> =
         pokemonResource.map { it.data == null && it is Resource.Loading }
 
 
@@ -53,10 +52,24 @@ class PokemonDetailsViewModel(
             emit(pokemonRepository.removeFromFavorites(pokemonId).toResource())
         }.shareIn(viewModelScope, SharingStarted.Lazily, 1)
 
-    override val isAddOrRemoveFavoriteLoading: Flow<Boolean> =
+    private val isAddOrRemoveFavoriteLoading: Flow<Boolean> =
         merge(favoritePokemonResult, removePokemonResult)
             .map { it is Resource.Loading }
             .onStart { emit(false) }
+
+
+    override val viewState: SharedFlow<PokemonDetailsContract.ViewState.PokemonDetailsViewState> =
+        combine(
+            pokemon,
+            isPokemonDetailsLoading,
+            isAddOrRemoveFavoriteLoading
+        ) { pokemon, isPokemonDetailsLoading, isAddOrRemoveFavoriteLoading ->
+            PokemonDetailsContract.ViewState.PokemonDetailsViewState(
+                pokemon,
+                isPokemonDetailsLoading,
+                isAddOrRemoveFavoriteLoading
+            )
+        }.shareIn(viewModelScope, replay = 1, started = SharingStarted.Lazily)
 
 
     init {
